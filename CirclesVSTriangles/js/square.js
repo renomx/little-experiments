@@ -3,6 +3,7 @@ function Square(y) {
 	this.y = y;
 	this.r = 45;
 	this.hp = 300;
+	this.damage = 10;
 	this.toDelete = false;
 
 	this.show = function() {		
@@ -14,7 +15,7 @@ function Square(y) {
 	}
 
 	this.move = function() {		
-		this.pos.x = this.pos.x - 18;
+		this.pos.x = this.pos.x - 0.4;
 	}
 
 	this.hit = function(damage) {

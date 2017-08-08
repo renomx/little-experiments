@@ -10,12 +10,9 @@ var spriteSheetPlants;
 var plantAnimation;
 
 function setup() {
-	createCanvas(601, 751);
+	createCanvas(651, 751);
 	cols = 4;
-	rows = 4;
-
-	spriteSheetPlants = loadSpriteSheet('img/plants.png', 8, 2, 1);
-	plantAnimation = loadAnimation(spriteSheetPlants);
+	rows = 4;	
 
 	intersect = new Intersect();
 
@@ -29,19 +26,21 @@ function setup() {
 
 function draw() {
 	background(51);
-	
-	animation(plantAnimation);
 
 	for(var i = 0; i < grid.length; i++) {		
 		grid[i].show();			
 	}
 
-	for(var i = 0; i < circles.length; i++) {
+
+	for(var i = circles.length - 1; i >= 0; i--) {	
 		circles[i].show();
 		if(frameCount % 60 == 0) {
 			var pellet = new Pellet(circles[i].pos);						
 			pellets.push(pellet);
-		}			
+		}	
+		if(circles[i].toDelete) {
+			circles.splice(i, 1);
+		}		
 	}
 
 	for(var i = 0; i < pellets.length; i++) {
@@ -69,18 +68,28 @@ function draw() {
 	}	
 
 	
-	if(frameCount % 60 == 0 && squares.length < 2) {				
-		var square = new Square(grid[floor(random(0,grid.length))].pos.y);			
-		squares.push(square);
+	if(frameCount % floor(random(250, 300)) == 0 && squares.length < 4) {			
+		var square = new Square(grid[floor(random(0,grid.length))].pos.y);				
+		squares.push(square);		
 	}
-	for(var i = 0; i < squares.length; i++) {
-		squares[i].show();
-		if(frameCount % 80 == 0) {
-			squares[i].move();
-		}		
-	}
+
 	for(var i = squares.length - 1; i >= 0; i--) {
-		if(squares[i].toDelete) {
+		var move = true;
+		var circleBeignHit;
+		squares[i].show();	
+		for(var j = 0; j < circles.length; j++) {
+			if(intersect.check(circles[j], squares[i])) {				
+				move = false;
+				circleBeignHit = circles[j];
+				break;			
+			}			
+		}	
+		if(move) {
+			squares[i].move();		
+		} else {
+			circleBeignHit.hit(squares[i].damage);
+		}
+		if(squares[i].toDelete || squares[i].pos.x < 0) {
 			squares.splice(i, 1);
 		}
 	}	
