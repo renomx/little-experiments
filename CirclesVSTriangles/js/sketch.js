@@ -1,7 +1,7 @@
 var cols, rows;
 var w = 120;
 var intersect;
-var circle;
+var circleControl;
 var grid = [];
 var circles = [];
 var pellets =[];
@@ -21,11 +21,15 @@ function setup() {
 			var cell = new Cell(j, i, w);
 			grid.push(cell);
 		}
-	}		
+	}	
+
+	circleControl = new Control();	
 }
 
 function draw() {
 	background(51);
+
+	circleControl.selectionCircle();
 
 	for(var i = 0; i < grid.length; i++) {		
 		grid[i].show();			
@@ -37,6 +41,7 @@ function draw() {
 		if(frameCount % 60 == 0) {
 			var pellet = new Pellet(circles[i].pos);						
 			pellets.push(pellet);
+			circleControl.selectionCircleTimer(frameCount);
 		}	
 		if(circles[i].toDelete) {
 			circles.splice(i, 1);
@@ -99,13 +104,15 @@ function draw() {
 function mousePressed() {
 	for(var i = 0; i < grid.length; i++) {				
 		if(grid[i].clicked(mouseX, mouseY) && grid[i].hasCircle == false) {	
-			var circle = new Circle(grid[i].pos);
+			var circle = new Circle(grid[i].pos, grid[i]);
 			circles.push(circle);
 
 			var pellet = new Pellet(circle.pos);
 			pellets.push(pellet);
 
 			grid[i].hasCircle = true;
+
+
 		}
 	}
 }
