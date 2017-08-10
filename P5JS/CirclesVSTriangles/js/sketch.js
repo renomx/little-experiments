@@ -8,6 +8,7 @@ var pellets =[];
 var squares = [];
 var spriteSheetPlants;
 var plantAnimation;
+var timer;
 
 function setup() {
 	createCanvas(651, 751);
@@ -102,13 +103,18 @@ function draw() {
 }
 
 function mousePressed() {
+	if(circles.length > 0) {
+		setTimeout(addCircle, 3000);
+	} else {
+		addCircle();
+	}
+}
+
+function addCircle() {
 	for(var i = 0; i < grid.length; i++) {				
 		if(grid[i].clicked(mouseX, mouseY) && grid[i].hasCircle == false) {	
 			var circle = new Circle(grid[i].pos, grid[i]);
 			circles.push(circle);
-
-			var pellet = new Pellet(circle.pos);
-			pellets.push(pellet);
 
 			grid[i].hasCircle = true;
 
