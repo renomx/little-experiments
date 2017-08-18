@@ -40,8 +40,7 @@ function draw() {
 		circles[i].show();
 		if(frameCount % 60 == 0) {
 			var pellet = new Pellet(circles[i].pos);						
-			pellets.push(pellet);
-			circleControl.selectionCircleTimer(frameCount);
+			pellets.push(pellet);			
 		}	
 		if(circles[i].toDelete) {
 			circles.splice(i, 1);
@@ -111,8 +110,6 @@ function mousePressed() {
 			pellets.push(pellet);
 
 			grid[i].hasCircle = true;
-
-
 		}
 	}
 }
